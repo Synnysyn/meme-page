@@ -7,5 +7,6 @@ from .models import *
 
 class MenuView(View):
     def get(self, request):
-        
-        return render(request, "meme_page/menu.html")
+        memes = Meme.objects.all()
+        context = {"meme": memes[1]}
+        return render(request, "meme_page/menu.html", context)

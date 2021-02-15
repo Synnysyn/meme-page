@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.base import Model
 from django.db.models.enums import Choices
+from django.db.models.fields.files import ImageField
 
 
 REACTIONS = (
@@ -15,7 +16,7 @@ REACTIONS = (
 class Meme(models.Model):
     title = models.CharField(max_length=64)
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to ='memes/uploads/% Y/% m/% d/')
+    image = models.ImageField(upload_to="uploads/")
 
     def __str__(self):
         return f"{self.title} by {self.creator.username}"
