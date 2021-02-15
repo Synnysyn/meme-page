@@ -15,7 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from meme_page import views as ex_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', ex_views.MenuView.as_view(), name="index"),
 ]

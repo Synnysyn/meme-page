@@ -15,7 +15,7 @@ REACTIONS = (
 class Meme(models.Model):
     title = models.CharField(max_length=64)
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
-    image = models.ImageField()
+    image = models.ImageField(upload_to ='memes/uploads/% Y/% m/% d/')
 
     def __str__(self):
         return f"{self.title} by {self.creator.username}"
@@ -31,7 +31,13 @@ class Report(models.Model):
     reported = models.ForeignKey(Meme, on_delete=models.CASCADE)
     message = models.TextField()
 
+    def __str__(self):
+        return f"{self.reported.title} reported: {self.message}"
 
-class Categories(models.Model):
+
+class Genre(models.Model):
     title = models.CharField(max_length=64)
-    memes = models.ManyToManyField(Meme)
+    memes = models.ManyToManyField(Meme, default=None)
+
+    def __str__(self):
+        return f"{self.title}"

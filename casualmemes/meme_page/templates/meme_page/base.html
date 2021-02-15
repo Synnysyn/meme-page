@@ -1,0 +1,16 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Casual Memes</title>
+</head>
+<body>
+    <a href="{% url 'index' %}">
+        <img src="{% static 'meme_page/casual_memes_logo.png' %}"/>
+    </a>
+    <hr>
+    {% block content %}
+    {% endblock %}
+</body>
+</html>
