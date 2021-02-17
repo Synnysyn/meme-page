@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.db.models.base import Model
 from django.db.models.enums import Choices
 from django.db.models.fields.files import ImageField
+from django.forms import widgets
 
 
 REACTIONS = (

@@ -9,6 +9,15 @@
     <a href="{% url 'index' %}">
         <img src="{% static 'meme_page/casual_memes_logo.png' %}"/>
     </a>
+    <p>
+    {% if user.is_authenticated %}
+      Hi {{ user.username }}!
+      <p><a href="{% url 'logout' %}">Log Out</a></p>
+    {% else %}
+      <p>You are not logged in</p>
+      <a href="{% url 'login' %}">Log In</a>
+    {% endif %}
+    </p>
     <hr>
     {% block content %}
     {% endblock %}

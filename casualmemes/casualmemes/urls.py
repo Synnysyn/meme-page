@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from . import settings
 from django.contrib.staticfiles.urls import static
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
@@ -23,6 +23,8 @@ from meme_page import views as ex_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', ex_views.MenuView.as_view(), name="index"),
+    path('meme/create/', ex_views.MemeCreateView.as_view(), name="create-meme"),
+    path('accounts/', include('django.contrib.auth.urls')),
 ]
 
 urlpatterns += staticfiles_urlpatterns()
