@@ -13,10 +13,18 @@ REACTIONS = (
 )
 
 
+class Genre(models.Model):
+    name = models.CharField(max_length=64)
+
+    def __str__(self):
+        return f"{self.name}"
+
+
 class Meme(models.Model):
     title = models.CharField(max_length=64)
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
     image = models.ImageField(upload_to="uploads/")
+    genres = models.ManyToManyField(Genre, default=None)
 
     def __str__(self):
         return f"{self.title} by {self.creator.username}"
@@ -34,11 +42,3 @@ class Report(models.Model):
 
     def __str__(self):
         return f"{self.reported.title} reported: {self.message}"
-
-
-class Genre(models.Model):
-    title = models.CharField(max_length=64)
-    memes = models.ManyToManyField(Meme, default=None)
-
-    def __str__(self):
-        return f"{self.title}"

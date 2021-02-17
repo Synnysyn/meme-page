@@ -8,5 +8,5 @@ from .models import *
 class MenuView(View):
     def get(self, request):
         memes = Meme.objects.all()
-        context = {"meme": memes[1]}
+        context = {"meme": memes[0]}
         return render(request, "meme_page/menu.html", context)
