@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('meme_page', '0007_auto_20210217_0924'),
+        ("meme_page", "0007_auto_20210217_0924"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='meme',
-            name='genres',
-            field=models.ManyToManyField(default=None, null=True, to='meme_page.Genre'),
+            model_name="meme",
+            name="genres",
+            field=models.ManyToManyField(default=None, null=True, to="meme_page.Genre"),
         ),
     ]

@@ -21,10 +21,10 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from meme_page import views as ex_views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', ex_views.MenuView.as_view(), name="index"),
-    path('meme/create/', ex_views.MemeCreateView.as_view(), name="create-meme"),
-    path('accounts/', include('django.contrib.auth.urls')),
+    path("admin/", admin.site.urls),
+    path("", ex_views.MenuView.as_view(), name="index"),
+    path("meme/create/", ex_views.MemeCreateView.as_view(), name="create-meme"),
+    path("accounts/", include("django.contrib.auth.urls")),
 ]
 
 urlpatterns += staticfiles_urlpatterns()

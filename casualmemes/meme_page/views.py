@@ -24,20 +24,22 @@ class MemeCreateView(PermissionRequiredMixin, View):
 
     def get(self, request):
         form = CreateMemeForm()
-        ctx = {"form":form}
+        ctx = {"form": form}
         return render(request, "meme_page/meme_create.html", ctx)
-    
+
     def post(self, request):
         form = CreateMemeForm(request.POST, request.FILES)
         if form.is_valid():
-            meme = Meme.objects.create(title=form.cleaned_data["title"], image=form.cleaned_data["image"], creator=request.user)
+            meme = Meme.objects.create(
+                title=form.cleaned_data["title"],
+                image=form.cleaned_data["image"],
+                creator=request.user,
+            )
             meme.genres.set(form.cleaned_data["genres"])
             meme.save()
             return redirect("index")
-        ctx = {"form":form}
+        ctx = {"form": form}
         return render(request, "meme_page/meme_create.html", ctx)
-
-
 
     # form_class = CreateMemeForm
     # template_name = "meme_page/meme_create.html"
