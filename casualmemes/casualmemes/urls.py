@@ -25,6 +25,7 @@ urlpatterns = [
     path("", ex_views.MenuView.as_view(), name="index"),
     path("meme/create/", ex_views.MemeCreateView.as_view(), name="create-meme"),
     path("accounts/", include("django.contrib.auth.urls")),
+    path("user/create/", ex_views.AddUserView.as_view(), name="create-user"),
 ]
 
 urlpatterns += staticfiles_urlpatterns()

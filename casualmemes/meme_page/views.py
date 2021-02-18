@@ -1,3 +1,4 @@
+from django.contrib.auth.models import Group
 from django.shortcuts import render, redirect
 from django.db.models import query
 from django.views import View
@@ -7,6 +8,7 @@ from .forms import *
 from django.urls import reverse_lazy
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from django import forms
 
 
 # Create your views here.
@@ -41,10 +43,15 @@ class MemeCreateView(PermissionRequiredMixin, View):
         ctx = {"form": form}
         return render(request, "meme_page/meme_create.html", ctx)
 
-    # form_class = CreateMemeForm
-    # template_name = "meme_page/meme_create.html"
-    # success_url = reverse_lazy("index")
+class AddUserView(FormView):
+    form_class = AddUserForm
+    template_name = "meme_page/user_add.html"
+    success_url = reverse_lazy("index")
 
-    # def form_valid(self, form):
-    #     meme = form.save()
-    #     return super().form_valid(form)
+    def form_valid(self, form):
+        user = form.save()
+        user.set_password(form.cleaned_data["password"])
+        user.save()
+        group = Group.objects.get(name="Any User")
+        group.user_set.add(user)
+        return super().form_valid(form)

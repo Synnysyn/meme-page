@@ -1,0 +1,11 @@
+{% extends 'meme_page/base.html' %}
+{% block title %}
+<h2>Create New Account</h2>
+{% endblock %}
+{% block content %}
+  <form action="" method="POST">
+    {% csrf_token %}
+    {{form.as_p}}
+    <button type="submit">Create Account</button>
+  </form>
+{% endblock %}
