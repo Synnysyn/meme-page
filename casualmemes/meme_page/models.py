@@ -7,10 +7,10 @@ from django.forms import widgets
 
 
 REACTIONS = (
-    (1, "love"),
-    (2, "surprised"),
-    (3, "sad"),
-    (4, "hate"),
+    (1, "😍"),
+    (2, "😲"),
+    (3, "😥"),
+    (4, "😡"),
 )
 
 

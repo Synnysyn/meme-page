@@ -43,6 +43,7 @@ class MemeCreateView(PermissionRequiredMixin, View):
         ctx = {"form": form}
         return render(request, "meme_page/meme_create.html", ctx)
 
+
 class AddUserView(FormView):
     form_class = AddUserForm
     template_name = "meme_page/user_add.html"
