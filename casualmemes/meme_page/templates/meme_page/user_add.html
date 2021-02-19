@@ -3,9 +3,14 @@
 <h2>Create New Account</h2>
 {% endblock %}
 {% block content %}
-  <form action="" method="POST">
-    {% csrf_token %}
-    {{form.as_p}}
-    <button type="submit">Create Account</button>
-  </form>
+<div class="d-flex justify-content-center">
+  <div class="d-flex flex-column bd-highlight mb-3">
+  <h2>Create new account</h2>
+    <form action="" method="POST" class="p-2 bd-highlight">
+      {% csrf_token %}
+      {{form.as_p}}
+      <button type="submit">Create Account</button>
+    </form>
+  </div>
+</div>
 {% endblock %}

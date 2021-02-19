@@ -1,5 +1,18 @@
 {% extends "meme_page/base.html" %}
 {% block content %}
-<h1>Main Page</h1>
-<p>Random Image: <img src="{{ meme.image.url }}"/></p>
+<div class="d-flex justify-content-evenly">
+    <div>Here will be list of categories to choose from</div>
+    <div class="">
+        <h2 class="text-center">{{ meme.title }}</h2>
+        <div class="d-flex justify-content-center"><img src="{{ meme.image.url }}"/></div>
+    </div>
+    <div class="">
+        <ul>
+            {% if user.is_authenticated %}
+            <li><a href="{% url 'create-meme' %}">Add Your Meme</a></li>
+            <li>change password</li>
+            {% endif %}
+        </ul>
+    </div>
+</div>
 {% endblock %}

@@ -3,9 +3,14 @@
 <h2>Create Meme</h2>
 {% endblock %}
 {% block content %}
-  <form method="POST" enctype="multipart/form-data">
+<div class="d-flex justify-content-center">
+  <div class="d-flex flex-column bd-highlight mb-3">
+  <h2 class="p-2 bd-highlight">Add Your Meme</h2>
+  <form method="POST" enctype="multipart/form-data" class="p-2 bd-highlight">
     {% csrf_token %}
     {{form.as_p}}
-    <button type="submit">Upload</button>
+    <button type="submit" class="bd-highlight mb-3">Upload</button>
   </form>
+  </div>
+</div>
 {% endblock %}

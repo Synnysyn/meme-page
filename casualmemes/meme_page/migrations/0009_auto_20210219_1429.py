@@ -6,18 +6,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('meme_page', '0008_auto_20210217_1141'),
+        ("meme_page", "0008_auto_20210217_1141"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='meme',
-            name='genres',
-            field=models.ManyToManyField(default=None, to='meme_page.Genre'),
+            model_name="meme",
+            name="genres",
+            field=models.ManyToManyField(default=None, to="meme_page.Genre"),
         ),
         migrations.AlterField(
-            model_name='reaction',
-            name='reaction',
-            field=models.IntegerField(choices=[(1, '😍'), (2, '😲'), (3, '😥'), (4, '😡')]),
+            model_name="reaction",
+            name="reaction",
+            field=models.IntegerField(choices=[(1, "😍"), (2, "😲"), (3, "😥"), (4, "😡")]),
         ),
     ]

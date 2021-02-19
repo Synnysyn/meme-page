@@ -3,10 +3,17 @@
 {% block title %}Login{% endblock %}
 
 {% block content %}
-<h2>Log In</h2>
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Log In</button>
-</form>
+<div class="d-flex justify-content-center">
+  <div class="d-flex flex-column bd-highlight mb-3 text-center">
+    <h2 class="p-2 bd-highlight">Login</h2>
+    <form method="post" class="p-2 bd-highlight">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="p-2 bd-highlight">Log In</button>
+    </form>
+  </div>
+</div>
+<div class="d-flex flex-column bd-highlight mb-3 text-center">
+  <p>or <a href="{% url 'create-user' %}">create an account</a></p>
+</div>
 {% endblock %}
