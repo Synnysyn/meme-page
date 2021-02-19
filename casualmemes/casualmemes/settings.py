@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "meme_page",
+    "django_cleanup",
 ]
 
 MIDDLEWARE = [
