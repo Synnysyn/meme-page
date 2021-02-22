@@ -12,4 +12,4 @@ DATABASES = {
     }
 }
 
-#settings
+# Rename this file to "local_settings.py" after configuration!

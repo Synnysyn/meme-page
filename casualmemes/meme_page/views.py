@@ -30,13 +30,15 @@ class MenuView(View):
                 f"{REACTIONS[1][1]} {Reaction.objects.filter(reaction_to=meme).filter(reaction=REACTIONS[1][0]).count()}",
                 f"{REACTIONS[2][1]} {Reaction.objects.filter(reaction_to=meme).filter(reaction=REACTIONS[2][0]).count()}",
                 f"{REACTIONS[3][1]} {Reaction.objects.filter(reaction_to=meme).filter(reaction=REACTIONS[3][0]).count()}",
-                ]
-            
-            context["memes"].append({
-                "avatar":avatar,
-                "clean_reactions":clean_reactions,
-                "meme":meme,
-            })
+            ]
+
+            context["memes"].append(
+                {
+                    "avatar": avatar,
+                    "clean_reactions": clean_reactions,
+                    "meme": meme,
+                }
+            )
         return render(request, "meme_page/menu.html", context)
 
 
