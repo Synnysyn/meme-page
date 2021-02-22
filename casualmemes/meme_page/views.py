@@ -9,6 +9,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django import forms
+import random
 
 
 # Create your views here.
@@ -16,8 +17,8 @@ from django import forms
 
 class MenuView(View):
     def get(self, request):
-        memes = Meme.objects.all()
-        context = {"meme": memes[0]}
+        meme = Meme.objects.order_by('-pk')[0]
+        context = {"meme": meme}
         return render(request, "meme_page/menu.html", context)
 
 
