@@ -1,11 +1,46 @@
 {% extends "meme_page/base.html" %}
 {% block content %}
+{% load static %}
 <div class="d-flex justify-content-evenly">
     <div>Here will be list of categories to choose from</div>
-    <div class="">
-        <h2 class="text-center">{{ meme.title }}</h2>
-        <div class="d-flex justify-content-center"><img src="{{ meme.image.url }}"/></div>
+
+
+
+<div class="flex-column">
+    {% for clean_meme in memes %}
+    <div class="" style="border:1px solid black">
+        <br>
+        <div class="d-flex justify-content-around align-items-center">
+            <div class="d-flex justify-content-between align-items-center" >
+                {% if clean_meme.avatar == "static_avatar" %}
+                    <img src="{% static 'meme_page/blank-avatar.png' %}" height="50"/>
+                {% else %}
+                    <img src="{{ clean_meme.avatar.image.url }}" height="50"/>
+                {% endif %}
+                
+                <h3 style="padding:10px">{{ clean_meme.meme.creator.username }}</h3>
+            </div>
+            
+            <h2 class="text-center">"{{ clean_meme.meme.title }}"</h2>
+        </div>
+        <br>
+        <div class="d-flex justify-content-center w-100 h-100"><img src="{{ clean_meme.meme.image.url }}" class="mw-100 mh=100"/></div>
+        <br>
+        <div class="d-flex justify-content-evenly align-items-center">
+            {% for react in clean_meme.clean_reactions %}
+            <button>{{react}}</button>
+            {% endfor %}
+        </div>
+        <br>
     </div>
+    <br>
+    {% endfor %}
+</div>
+
+
+
+
+
     <div class="">
         <ul>
             {% if user.is_authenticated %}

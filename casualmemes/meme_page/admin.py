@@ -4,3 +4,5 @@ from .models import *
 # Register your models here.
 admin.site.register(Meme)
 admin.site.register(Genre)
+admin.site.register(Reaction)
+admin.site.register(Avatar)
