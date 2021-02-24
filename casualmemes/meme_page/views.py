@@ -124,7 +124,6 @@ class AddUserView(FormView):
 
 
 class CreateReportView(FormView):
-
     def get(self, request, report_id):
         ctx = {"report_id": report_id}
         return render(request, "meme_page/report_create.html", ctx)
@@ -134,3 +133,22 @@ class CreateReportView(FormView):
         reported_meme = Meme.objects.get(pk=report_id)
         Report.objects.create(message=message, reported=reported_meme)
         return redirect("index")
+
+class AvatarChangeView(FormView):
+    def get(self, request):
+        form = AvatarChange()
+        ctx = {"form": form}
+        return render(request, "meme_page/avatar_form.html", ctx)
+
+    def post(self, request):
+        form = AvatarChange(request.POST, request.FILES)
+        if form.is_valid():
+            old_avatars = Avatar.objects.filter(owner=request.user)
+            old_avatars.delete()
+            Avatar.objects.create(
+                image=form.cleaned_data["image"],
+                owner=request.user,
+            )
+            return redirect("index")
+        ctx = {"form": form}
+        return render(request, "meme_page/avatar_form.html", ctx)

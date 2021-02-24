@@ -35,3 +35,9 @@ class AddUserForm(forms.ModelForm):
             msg = "Passwords must be the same"
             self.add_error("password", msg)
             self.add_error("repeat_password", msg)
+
+
+class AvatarChange(forms.ModelForm):
+    class Meta:
+        model = Avatar
+        fields = ["image"]

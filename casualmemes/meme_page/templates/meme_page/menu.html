@@ -51,6 +51,7 @@
             {% if user.is_authenticated %}
             <li><a href="{% url 'create-meme' %}">Add Your Meme</a></li>
             <li><a href="{% url 'password_change' %}">Change password</a></li>
+            <li><a href="{% url 'change-avatar' %}">Change avatar</a></li>
             {% endif %}
         </ul>
     </div>
