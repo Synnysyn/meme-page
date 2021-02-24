@@ -29,11 +29,12 @@
         <div class="d-flex justify-content-evenly align-items-center">
             <form action="" method="POST">
                 {% csrf_token %}
-                <input type="hidden" name="meme_id" value="{{ clean_meme.meme.pk }}">
+                <input type="hidden" name="react_meme_id" value="{{ clean_meme.meme.pk }}">
                 {% for react in clean_meme.clean_reactions %}
                 <button type="submit" name="{{ react.1 }}">{{ react.0 }}</button>
                 {% endfor %}
             </form>
+            <a href="{% url 'create-report' clean_meme.meme.pk %}">Report Meme</a>
         </div>
         <br>
     </div>

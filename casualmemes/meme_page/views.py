@@ -55,8 +55,8 @@ class MenuView(View):
         return render(request, "meme_page/menu.html", context)
 
     def post(self, request):
-        if "meme_id" in request.POST:
-            meme = Meme.objects.get(pk=request.POST.get("meme_id"))
+        if "react_meme_id" in request.POST:
+            meme = Meme.objects.get(pk=request.POST.get("react_meme_id"))
             if REACTIONS[0][1] in request.POST:
                 reaction = REACTIONS[0][0]
             elif REACTIONS[1][1] in request.POST:
@@ -121,3 +121,16 @@ class AddUserView(FormView):
         group = Group.objects.get(name="Any User")
         group.user_set.add(user)
         return super().form_valid(form)
+
+
+class CreateReportView(FormView):
+
+    def get(self, request, report_id):
+        ctx = {"report_id": report_id}
+        return render(request, "meme_page/report_create.html", ctx)
+
+    def post(self, request, report_id):
+        message = request.POST["report_message"]
+        reported_meme = Meme.objects.get(pk=report_id)
+        Report.objects.create(message=message, reported=reported_meme)
+        return redirect("index")

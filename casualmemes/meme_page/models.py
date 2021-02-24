@@ -45,7 +45,7 @@ class Report(models.Model):
     message = models.TextField()
 
     def __str__(self):
-        return f"{self.reported.title} reported: {self.message}"
+        return f'{self.reported} got reported: "{self.message}"'
 
 
 class Avatar(models.Model):
