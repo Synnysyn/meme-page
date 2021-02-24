@@ -36,6 +36,9 @@ class Reaction(models.Model):
     reaction_to = models.ForeignKey(Meme, on_delete=models.CASCADE)
     reaction = models.IntegerField(choices=REACTIONS)
 
+    def __str__(self):
+        return f"{REACTIONS[self.reaction - 1][1]} {self.reaction_from} -> {self.reaction_to}"
+
 
 class Report(models.Model):
     reported = models.ForeignKey(Meme, on_delete=models.CASCADE)

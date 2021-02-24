@@ -9,6 +9,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django import forms
+from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 import random
 
 
@@ -26,10 +27,22 @@ class MenuView(View):
             except IndexError:
                 avatar = "static_avatar"
             clean_reactions = [
-                f"{REACTIONS[0][1]} {Reaction.objects.filter(reaction_to=meme).filter(reaction=REACTIONS[0][0]).count()}",
-                f"{REACTIONS[1][1]} {Reaction.objects.filter(reaction_to=meme).filter(reaction=REACTIONS[1][0]).count()}",
-                f"{REACTIONS[2][1]} {Reaction.objects.filter(reaction_to=meme).filter(reaction=REACTIONS[2][0]).count()}",
-                f"{REACTIONS[3][1]} {Reaction.objects.filter(reaction_to=meme).filter(reaction=REACTIONS[3][0]).count()}",
+                [
+                    f"{REACTIONS[0][1]} {Reaction.objects.filter(reaction_to=meme).filter(reaction=REACTIONS[0][0]).count()}",
+                    REACTIONS[0][1],
+                ],
+                [
+                    f"{REACTIONS[1][1]} {Reaction.objects.filter(reaction_to=meme).filter(reaction=REACTIONS[1][0]).count()}",
+                    REACTIONS[1][1],
+                ],
+                [
+                    f"{REACTIONS[2][1]} {Reaction.objects.filter(reaction_to=meme).filter(reaction=REACTIONS[2][0]).count()}",
+                    REACTIONS[2][1],
+                ],
+                [
+                    f"{REACTIONS[3][1]} {Reaction.objects.filter(reaction_to=meme).filter(reaction=REACTIONS[3][0]).count()}",
+                    REACTIONS[3][1],
+                ],
             ]
 
             context["memes"].append(
@@ -40,6 +53,37 @@ class MenuView(View):
                 }
             )
         return render(request, "meme_page/menu.html", context)
+
+    def post(self, request):
+        if "meme_id" in request.POST:
+            meme = Meme.objects.get(pk=request.POST.get("meme_id"))
+            if REACTIONS[0][1] in request.POST:
+                reaction = REACTIONS[0][0]
+            elif REACTIONS[1][1] in request.POST:
+                reaction = REACTIONS[1][0]
+            elif REACTIONS[2][1] in request.POST:
+                reaction = REACTIONS[2][0]
+            elif REACTIONS[3][1] in request.POST:
+                reaction = REACTIONS[3][0]
+            try:
+                react = Reaction.objects.get(
+                    reaction_from=request.user, reaction_to=meme
+                )
+                react = Reaction.objects.filter(
+                    reaction_from=request.user, reaction_to=meme
+                )
+                react.delete()
+            except MultipleObjectsReturned:
+                react = Reaction.objects.filter(
+                    reaction_from=request.user, reaction_to=meme
+                )
+                react.delete()
+            except ObjectDoesNotExist:
+                pass
+            react = Reaction.objects.create(
+                reaction_from=request.user, reaction_to=meme, reaction=reaction
+            )
+            return redirect("index")
 
 
 class MemeCreateView(PermissionRequiredMixin, View):

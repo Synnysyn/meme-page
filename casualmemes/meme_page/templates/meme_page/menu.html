@@ -27,9 +27,13 @@
         <div class="d-flex justify-content-center w-100 h-100"><img src="{{ clean_meme.meme.image.url }}" class="mw-100 mh=100"/></div>
         <br>
         <div class="d-flex justify-content-evenly align-items-center">
-            {% for react in clean_meme.clean_reactions %}
-            <button>{{react}}</button>
-            {% endfor %}
+            <form action="" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="meme_id" value="{{ clean_meme.meme.pk }}">
+                {% for react in clean_meme.clean_reactions %}
+                <button type="submit" name="{{ react.1 }}">{{ react.0 }}</button>
+                {% endfor %}
+            </form>
         </div>
         <br>
     </div>
