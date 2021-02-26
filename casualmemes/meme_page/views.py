@@ -10,6 +10,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django import forms
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import random
 
 
@@ -19,7 +20,8 @@ import random
 class MenuView(View):
     def get(self, request):
         memes = Meme.objects.all().order_by("-pk")
-        context = {"memes": []}
+        clean_memes = []
+
         for meme in memes:
             avatar = Avatar.objects.filter(owner=meme.creator)
             try:
@@ -45,14 +47,25 @@ class MenuView(View):
                 ],
             ]
 
-            context["memes"].append(
+            clean_memes.append(
                 {
                     "avatar": avatar,
                     "clean_reactions": clean_reactions,
                     "meme": meme,
                 }
             )
-        return render(request, "meme_page/menu.html", context)
+        
+        page = request.GET.get('page', 1)
+        paginator = Paginator(clean_memes,5)
+
+        try:
+            dict_memes = paginator.page(page)
+        except PageNotAnInteger:
+            dict_memes = paginator.page(1)
+        except EmptyPage:
+            dict_memes = paginator.page(paginator.num_pages)
+
+        return render(request, "meme_page/menu.html", {'dict_memes': dict_memes})
 
     def post(self, request):
         if "react_meme_id" in request.POST:
@@ -83,7 +96,8 @@ class MenuView(View):
             react = Reaction.objects.create(
                 reaction_from=request.user, reaction_to=meme, reaction=reaction
             )
-            return redirect("index")
+            url = f"/?page={request.GET.get('page', 1)}#meme{meme.pk}"
+            return redirect(url)
 
 
 class MemeCreateView(PermissionRequiredMixin, View):
