@@ -27,8 +27,17 @@ urlpatterns = [
     path("meme/create/", ex_views.MemeCreateView.as_view(), name="create-meme"),
     path("avatar/change/", ex_views.AvatarChangeView.as_view(), name="change-avatar"),
     path("user/create/", ex_views.AddUserView.as_view(), name="create-user"),
-    path("meme/report/<int:report_id>", ex_views.CreateReportView.as_view(), name="create-report"),
-    path("accounts/password_change/", auth_views.PasswordChangeView.as_view(template_name="registration/password_change.html")),
+    path(
+        "meme/report/<int:report_id>",
+        ex_views.CreateReportView.as_view(),
+        name="create-report",
+    ),
+    path(
+        "accounts/password_change/",
+        auth_views.PasswordChangeView.as_view(
+            template_name="registration/password_change.html"
+        ),
+    ),
     path("accounts/", include("django.contrib.auth.urls")),
 ]
 
