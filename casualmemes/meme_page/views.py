@@ -11,19 +11,15 @@ from django.contrib.auth.mixins import PermissionRequiredMixin
 from django import forms
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import Q
 import random
 
 
 # Create your views here.
 
-
-class MenuView(View):
-    def get(self, request):
-        memes = Meme.objects.all().order_by("-pk")
-        genres = Genre.objects.all()
-        clean_memes = []
-
-        for meme in memes:
+def meme_cleaning(memes):
+    clean_memes = []
+    for meme in memes:
             avatar = Avatar.objects.filter(owner=meme.creator)
             try:
                 avatar = avatar[0]
@@ -47,7 +43,6 @@ class MenuView(View):
                     REACTIONS[3][1],
                 ],
             ]
-
             clean_memes.append(
                 {
                     "avatar": avatar,
@@ -55,16 +50,26 @@ class MenuView(View):
                     "meme": meme,
                 }
             )
-        
-        page = request.GET.get('page', 1)
-        paginator = Paginator(clean_memes,5)
+    return clean_memes
 
-        try:
-            dict_memes = paginator.page(page)
-        except PageNotAnInteger:
-            dict_memes = paginator.page(1)
-        except EmptyPage:
-            dict_memes = paginator.page(paginator.num_pages)
+def paginating(page, memes):
+    clean_memes = meme_cleaning(memes)
+    paginator = Paginator(clean_memes,5)
+    try:
+        dict_memes = paginator.page(page)
+    except PageNotAnInteger:
+        dict_memes = paginator.page(1)
+    except EmptyPage:
+        dict_memes = paginator.page(paginator.num_pages)
+    
+    return dict_memes
+
+class MenuView(View):
+    def get(self, request):
+        memes = Meme.objects.all().order_by("-pk")
+        genres = Genre.objects.all()
+        page = request.GET.get('page', 1)
+        dict_memes = paginating(page, memes)
 
         context = {
             'dict_memes': dict_memes,
@@ -74,6 +79,7 @@ class MenuView(View):
         return render(request, "meme_page/menu.html", context)
 
     def post(self, request):
+        url='index'
         if "react_meme_id" in request.POST:
             meme = Meme.objects.get(pk=request.POST.get("react_meme_id"))
             if REACTIONS[0][1] in request.POST:
@@ -103,7 +109,23 @@ class MenuView(View):
                 reaction_from=request.user, reaction_to=meme, reaction=reaction
             )
             url = f"/?page={request.GET.get('page', 1)}#meme{meme.pk}"
-            return redirect(url)
+        
+        if "filters_applied" in request.POST:
+            if request.POST.get("genre_filter") == "all":
+                return redirect(url)
+            context = {}
+            genre_filter = Genre.objects.get(name=request.POST.get("genre_filter"))
+            memes = Meme.objects.filter(genres=genre_filter).order_by("-pk")
+            genres = Genre.objects.all()
+            page = request.GET.get('page', 1)
+            dict_memes = paginating(page, memes)
+            context['dict_memes'] = dict_memes
+            context['genres'] = genres
+            context['genre_filter'] = genre_filter.name
+            return render(request, "meme_page/menu.html", context)
+
+
+        return redirect(url)
 
 
 class MemeCreateView(PermissionRequiredMixin, View):

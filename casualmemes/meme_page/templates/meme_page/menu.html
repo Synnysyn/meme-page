@@ -8,13 +8,21 @@
             {% csrf_token %}
             <div class="d-flex flex-column bd-highlight mb-3">
                 {%for genre in genres%}
-                    <div>
-                        <input type="checkbox" id="{{genre.name}}" value="{{genre.name}}">
-                        <label for="{{genre.name}}">{{genre.name}}</label>
-                    </div>
+                <div>
+                    {% if genre.name == genre_filter %}
+                    <input type="radio" id="{{genre.name}}" name="genre_filter" value="{{genre.name}}" checked="checked">
+                    {%else%}
+                    <input type="radio" id="{{genre.name}}" name="genre_filter" value="{{genre.name}}">
+                    {%endif%}
+                    <label for="{{genre.name}}">{{genre.name}}</label>
+                </div>
                 {%endfor%}
+                <div>
+                    <input type="radio" id="all" name="genre_filter" value="all">
+                    <label for="all">All</label>
+                </div>
                 <br>
-                <button type="submit" class="btn btn-primary">Filter</button>
+                <button type="submit" class="btn btn-primary" name="filters_applied">Filter</button>
             </div>
         </form>
     </div>
