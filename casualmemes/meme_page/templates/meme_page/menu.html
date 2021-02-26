@@ -45,7 +45,8 @@
 
     {% if dict_memes.has_next %}
     <div class="d-flex justify-content-evenly align-items-center">
-        <a class="infinite-more-link btn btn-primary btn-lg btn-block" href="{{ request.get_full_path }}?page={{ dict_memes.next_page_number }}">More</a>
+        <a class="infinite-more-link btn btn-primary btn-lg btn-block" href="?page={{ dict_memes.next_page_number }}">More</a>
+        <!-- {{ request.get_full_path }} -->
     </div>
     <br>
     {% endif %}
