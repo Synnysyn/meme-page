@@ -25,10 +25,10 @@
     </div>
     <div class="col-4 text-end">
     {% if user.is_authenticated %}
-      Hi {{ user.username }}!
+      <h4>Hi {{ user.username }}!</h4>
       <div><a href="{% url 'logout' %}" class="btn btn-primary btn-sm">Log Out</a></div>
     {% else %}
-      <div>You are not logged in</div>
+      <h4>You are not logged in</h4>
       <a href="{% url 'login' %}" class="btn btn-primary btn-sm">Log In</a>
     {% endif %}
     </div>

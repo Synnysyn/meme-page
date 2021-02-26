@@ -20,6 +20,7 @@ import random
 class MenuView(View):
     def get(self, request):
         memes = Meme.objects.all().order_by("-pk")
+        genres = Genre.objects.all()
         clean_memes = []
 
         for meme in memes:
@@ -65,7 +66,12 @@ class MenuView(View):
         except EmptyPage:
             dict_memes = paginator.page(paginator.num_pages)
 
-        return render(request, "meme_page/menu.html", {'dict_memes': dict_memes})
+        context = {
+            'dict_memes': dict_memes,
+            'genres': genres,
+        }
+
+        return render(request, "meme_page/menu.html", context)
 
     def post(self, request):
         if "react_meme_id" in request.POST:
