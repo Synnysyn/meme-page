@@ -19,6 +19,9 @@ import random
 
 
 def meme_cleaning(memes):
+    """
+    use it to change meme queryset into custom dict
+    """
     clean_memes = []
     for meme in memes:
         avatar = Avatar.objects.filter(owner=meme.creator)
@@ -55,6 +58,9 @@ def meme_cleaning(memes):
 
 
 def paginating(page, memes):
+    """
+    use it to prepare paginated page from meme queryset
+    """
     clean_memes = meme_cleaning(memes)
     paginator = Paginator(clean_memes, 5)
     try:
@@ -68,6 +74,9 @@ def paginating(page, memes):
 
 
 class MenuView(View):
+    """
+    main menu view
+    """
     def get(self, request):
         memes = Meme.objects.all().order_by("-pk")
         genres = Genre.objects.all()
@@ -133,6 +142,9 @@ class MenuView(View):
 
 
 class MemeCreateView(PermissionRequiredMixin, View):
+    """
+    use it to create new memes
+    """
     permission_required = "meme_page.add_meme"
 
     def get(self, request):
@@ -156,6 +168,9 @@ class MemeCreateView(PermissionRequiredMixin, View):
 
 
 class AddUserView(FormView):
+    """
+    use it to create new user
+    """
     form_class = AddUserForm
     template_name = "meme_page/user_add.html"
     success_url = reverse_lazy("index")
@@ -170,6 +185,9 @@ class AddUserView(FormView):
 
 
 class CreateReportView(FormView):
+    """
+    use it to report meme
+    """
     def get(self, request, report_id):
         ctx = {"report_id": report_id}
         return render(request, "meme_page/report_create.html", ctx)
@@ -182,6 +200,9 @@ class CreateReportView(FormView):
 
 
 class AvatarChangeView(FormView):
+    """
+    use it to change or add avatar
+    """
     def get(self, request):
         form = AvatarChange()
         ctx = {"form": form}

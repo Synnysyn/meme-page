@@ -4,6 +4,9 @@ from django.contrib.auth.models import User
 
 
 class CreateMemeForm(forms.ModelForm):
+    """
+    use it to crete new meme
+    """
     class Meta:
         model = Meme
         fields = [
@@ -15,6 +18,9 @@ class CreateMemeForm(forms.ModelForm):
 
 
 class AddUserForm(forms.ModelForm):
+    """
+    use it to add new user
+    """
     class Meta:
         model = User
         fields = [
@@ -38,6 +44,9 @@ class AddUserForm(forms.ModelForm):
 
 
 class AvatarChange(forms.ModelForm):
+    """
+    use it to change or add avatar
+    """
     class Meta:
         model = Avatar
         fields = ["image"]
