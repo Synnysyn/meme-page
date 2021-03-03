@@ -5,3 +5,5 @@ django-cleanup-5.1.0
 nodejs
 npm
 waypoints
+pytest
+pytest-django

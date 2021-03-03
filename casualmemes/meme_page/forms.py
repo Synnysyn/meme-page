@@ -1,4 +1,4 @@
-from .models import *
+from .models import Meme, User, Avatar
 from django import forms
 from django.contrib.auth.models import User
 

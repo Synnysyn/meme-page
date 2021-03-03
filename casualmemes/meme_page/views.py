@@ -1,18 +1,13 @@
 from django.contrib.auth.models import Group
 from django.shortcuts import render, redirect
-from django.db.models import query
 from django.views import View
-from django.views.generic import FormView, CreateView, UpdateView, DeleteView, ListView
-from .models import *
-from .forms import *
+from django.views.generic import FormView
+from .models import Genre, Meme, Reaction, Report, Avatar, REACTIONS
+from .forms import CreateMemeForm, AddUserForm, AvatarChange
 from django.urls import reverse_lazy
-from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import PermissionRequiredMixin
-from django import forms
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.db.models import Q
-import random
 
 
 # Create your views here.
