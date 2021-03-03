@@ -18,6 +18,7 @@ def meme_cleaning(memes):
     use it to change meme queryset into custom dict
     """
     clean_memes = []
+    counter = 1
     for meme in memes:
         avatar = Avatar.objects.filter(owner=meme.creator)
         try:
@@ -42,13 +43,21 @@ def meme_cleaning(memes):
                 REACTIONS[3][1],
             ],
         ]
+
+        all_genres = ["All"]
+        for genre in meme.genres.all():
+            all_genres.append(genre.name)
+
         clean_memes.append(
             {
                 "avatar": avatar,
                 "clean_reactions": clean_reactions,
                 "meme": meme,
+                "page_number": counter,
+                "meme_genres": all_genres,
             }
         )
+        counter += 1
     return clean_memes
 
 
@@ -68,11 +77,21 @@ def paginating(page, memes):
     return dict_memes
 
 
+class RedirectView(View):
+    """
+    redirects to main menu
+    """
+
+    def get(self, request):
+        return redirect("menu", genre="All")
+
+
 class MenuView(View):
     """
     main menu view
     """
-    def get(self, request):
+
+    def get(self, request, genre):
         memes = Meme.objects.all().order_by("-pk")
         genres = Genre.objects.all()
         page = request.GET.get("page", 1)
@@ -81,12 +100,19 @@ class MenuView(View):
         context = {
             "dict_memes": dict_memes,
             "genres": genres,
+            "genre": genre,
         }
 
         return render(request, "meme_page/menu.html", context)
 
-    def post(self, request):
-        url = "index"
+    def post(self, request, genre):
+        if "filters_applied" in request.POST:
+            try:
+                genre_filter = Genre.objects.get(name=request.POST.get("genre_filter"))
+                genre = genre_filter
+            except ObjectDoesNotExist:
+                genre = "All"
+
         if "react_meme_id" in request.POST:
             meme = Meme.objects.get(pk=request.POST.get("react_meme_id"))
             if REACTIONS[0][1] in request.POST:
@@ -117,29 +143,16 @@ class MenuView(View):
             react = Reaction.objects.create(
                 reaction_from=request.user, reaction_to=meme, reaction=reaction
             )
-            url = f"/?page={request.GET.get('page', 1)}#meme{meme.pk}"
 
-        if "filters_applied" in request.POST:
-            if request.POST.get("genre_filter") == "all":
-                return redirect(url)
-            context = {}
-            genre_filter = Genre.objects.get(name=request.POST.get("genre_filter"))
-            memes = Meme.objects.filter(genres=genre_filter).order_by("-pk")
-            genres = Genre.objects.all()
-            page = request.GET.get("page", 1)
-            dict_memes = paginating(page, memes)
-            context["dict_memes"] = dict_memes
-            context["genres"] = genres
-            context["genre_filter"] = genre_filter.name
-            return render(request, "meme_page/menu.html", context)
-
-        return redirect(url)
+            page = int(request.POST.get("react_meme_page"))
+        return redirect("menu", genre)
 
 
 class MemeCreateView(PermissionRequiredMixin, View):
     """
     use it to create new memes
     """
+
     permission_required = "meme_page.add_meme"
 
     def get(self, request):
@@ -166,6 +179,7 @@ class AddUserView(FormView):
     """
     use it to create new user
     """
+
     form_class = AddUserForm
     template_name = "meme_page/user_add.html"
     success_url = reverse_lazy("index")
@@ -183,6 +197,7 @@ class CreateReportView(FormView):
     """
     use it to report meme
     """
+
     def get(self, request, report_id):
         ctx = {"report_id": report_id}
         return render(request, "meme_page/report_create.html", ctx)
@@ -198,6 +213,7 @@ class AvatarChangeView(FormView):
     """
     use it to change or add avatar
     """
+
     def get(self, request):
         form = AvatarChange()
         ctx = {"form": form}

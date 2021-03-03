@@ -23,7 +23,8 @@ from meme_page import views as ex_views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", ex_views.MenuView.as_view(), name="index"),
+    path("memes/<genre>", ex_views.MenuView.as_view(), name="menu"),
+    path("", ex_views.RedirectView.as_view(), name="index"),
     path("meme/create/", ex_views.MemeCreateView.as_view(), name="create-meme"),
     path("avatar/change/", ex_views.AvatarChangeView.as_view(), name="change-avatar"),
     path("user/create/", ex_views.AddUserView.as_view(), name="create-user"),

@@ -8,19 +8,19 @@
         <form action="" method="POST">
             {% csrf_token %}
             <div class="d-flex flex-column bd-highlight mb-3">
-                {%for genre in genres%}
+                {%for form_genre in genres%}
                 <div>
-                    {% if genre.name == genre_filter %}
-                    <input type="radio" id="{{genre.name}}" name="genre_filter" value="{{genre.name}}" checked="checked">
+                    {% if form_genre.name == genre %}
+                    <input type="radio" id="{{form_genre.name}}" name="genre_filter" value="{{form_genre.name}}" checked="checked">
                     {%else%}
-                    <input type="radio" id="{{genre.name}}" name="genre_filter" value="{{genre.name}}">
+                    <input type="radio" id="{{form_genre.name}}" name="genre_filter" value="{{form_genre.name}}">
                     {%endif%}
-                    <label for="{{genre.name}}">{{genre.name}}</label>
+                    <label for="{{form_genre.name}}">{{form_genre.name}}</label>
                 </div>
                 {%endfor%}
                 <div>
                     <input type="radio" id="all" name="genre_filter" value="all">
-                    <label for="all">All</label>
+                    <label for="All">All</label>
                 </div>
                 <br>
                 <button type="submit" class="btn btn-primary" name="filters_applied">Filter</button>
@@ -31,42 +31,53 @@
 
 <div class="flex-column">
     <div class="all_memes">
+
     {% for clean_meme in dict_memes %}
-        <div class="card" style="border:1px solid black" id="meme{{clean_meme.meme.pk}}">
-            <br>
-            <div class="card-div d-flex justify-content-around align-items-center">
-                <div class="card-div d-flex justify-content-between align-items-center" >
-                    {% if clean_meme.avatar == "static_avatar" %}
-                        <img src="{% static 'meme_page/blank-avatar.png' %}" height="50"/>
-                    {% else %}
-                        <img src="{{ clean_meme.avatar.image.url }}" height="50"/>
-                    {% endif %}
+
+        {% if genre in clean_meme.meme_genres%}
+        <div class="card">
+        {% else %}
+        <div class="card" hidden>
+        {% endif %}
+            <!-- {% if genre in clean_meme.meme_genres %} -->
+            <div style="border:1px solid black" id="meme{{clean_meme.meme.pk}}">
+                <br>
+                <div class="card-div d-flex justify-content-around align-items-center">
+                    <div class="card-div d-flex justify-content-between align-items-center" >
+                        {% if clean_meme.avatar == "static_avatar" %}
+                            <img src="{% static 'meme_page/blank-avatar.png' %}" height="50"/>
+                        {% else %}
+                            <img src="{{ clean_meme.avatar.image.url }}" height="50"/>
+                        {% endif %}
+                        
+                        <h3 style="padding:10px">{{ clean_meme.meme.creator.username }}</h3>
+                    </div>
                     
-                    <h3 style="padding:10px">{{ clean_meme.meme.creator.username }}</h3>
+                    <h2 class="text-center">"{{ clean_meme.meme.title }}"</h2>
                 </div>
-                
-                <h2 class="text-center">"{{ clean_meme.meme.title }}"</h2>
+                <br>
+                <div class="card-div d-flex justify-content-center w-100 h-100"><img src="{{ clean_meme.meme.image.url }}" class="mw-100 mh=100"/></div>
+                <br>
+                <div class="card-div d-flex justify-content-evenly align-items-center">
+                    <form class="card-form" action="" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="react_meme_id" value="{{ clean_meme.meme.pk }}">
+                        <input type="hidden" name="react_meme_page" value="{{ clean_meme.page_number }}">
+                        {% for react in clean_meme.clean_reactions %}
+                        <button type="submit" name="{{ react.1 }}" class="btn btn-secondary">{{ react.0 }}</button>
+                        {% endfor %}
+                    </form>
+                    <a href="{% url 'create-report' clean_meme.meme.pk %}" class="btn btn-secondary">Report Meme</a>
+                </div>
+                <br>
             </div>
-            <br>
-            <div class="card-div d-flex justify-content-center w-100 h-100"><img src="{{ clean_meme.meme.image.url }}" class="mw-100 mh=100"/></div>
-            <br>
-            <div class="card-div d-flex justify-content-evenly align-items-center">
-                <form class="card-form" action="" method="POST">
-                    {% csrf_token %}
-                    <input type="hidden" name="react_meme_id" value="{{ clean_meme.meme.pk }}">
-                    {% for react in clean_meme.clean_reactions %}
-                    <button type="submit" name="{{ react.1 }}" class="btn btn-secondary">{{ react.0 }}</button>
-                    {% endfor %}
-                </form>
-                <a href="{% url 'create-report' clean_meme.meme.pk %}" class="btn btn-secondary">Report Meme</a>
-            </div>
-            <br>
+            <!-- {% endif %} -->
         </div>
     {% endfor %}
     {% if dict_memes.has_next %}
-    <p class="pagination d-flex justify-content-evenly align-items-center">
-        <a class="next-page" href="?page={{ dict_memes.next_page_number }}"></a>
-    </p>
+    <div class="pagination d-flex justify-content-evenly align-items-center">
+        <a class="next-page" href="/memes/{{genre}}?page={{ dict_memes.next_page_number }}"></a>
+    </div>
     {% endif %}
     </div>
 </div>
@@ -94,7 +105,7 @@
         var $list = $('.all_memes');
         $list.jscroll({
             loadingHtml: '<div class="text-center">Loading...</div>',
-            padding: 100,
+            padding: 0,
             pagingSelector: '.pagination',
             nextSelector: 'a.next-page:last',
             contentSelector: '.card,.pagination'

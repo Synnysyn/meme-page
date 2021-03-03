@@ -7,6 +7,7 @@ class CreateMemeForm(forms.ModelForm):
     """
     use it to crete new meme
     """
+
     class Meta:
         model = Meme
         fields = [
@@ -21,6 +22,7 @@ class AddUserForm(forms.ModelForm):
     """
     use it to add new user
     """
+
     class Meta:
         model = User
         fields = [
@@ -47,6 +49,7 @@ class AvatarChange(forms.ModelForm):
     """
     use it to change or add avatar
     """
+
     class Meta:
         model = Avatar
         fields = ["image"]
