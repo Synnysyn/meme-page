@@ -57,7 +57,7 @@ def paginating(page, memes):
     use it to prepare paginated page from meme queryset
     """
     clean_memes = meme_cleaning(memes)
-    paginator = Paginator(clean_memes, 5)
+    paginator = Paginator(clean_memes, 1)
     try:
         dict_memes = paginator.page(page)
     except PageNotAnInteger:

@@ -1,7 +1,8 @@
 {% extends "meme_page/base.html" %}
 {% block content %}
 {% load static %}
-<div class="d-flex justify-content-evenly">
+
+<div class="container d-flex justify-content-evenly">
     <div class="flex-column">
         <h2>Genres</h2>
         <form action="" method="POST">
@@ -29,12 +30,12 @@
 
 
 <div class="flex-column">
-    <div class="infinite-container">
+    <div class="all_memes">
     {% for clean_meme in dict_memes %}
-        <div class="" style="border:1px solid black" id="meme{{clean_meme.meme.pk}}">
+        <div class="card" style="border:1px solid black" id="meme{{clean_meme.meme.pk}}">
             <br>
-            <div class="d-flex justify-content-around align-items-center">
-                <div class="d-flex justify-content-between align-items-center" >
+            <div class="card-div d-flex justify-content-around align-items-center">
+                <div class="card-div d-flex justify-content-between align-items-center" >
                     {% if clean_meme.avatar == "static_avatar" %}
                         <img src="{% static 'meme_page/blank-avatar.png' %}" height="50"/>
                     {% else %}
@@ -47,10 +48,10 @@
                 <h2 class="text-center">"{{ clean_meme.meme.title }}"</h2>
             </div>
             <br>
-            <div class="d-flex justify-content-center w-100 h-100"><img src="{{ clean_meme.meme.image.url }}" class="mw-100 mh=100"/></div>
+            <div class="card-div d-flex justify-content-center w-100 h-100"><img src="{{ clean_meme.meme.image.url }}" class="mw-100 mh=100"/></div>
             <br>
-            <div class="d-flex justify-content-evenly align-items-center">
-                <form action="" method="POST">
+            <div class="card-div d-flex justify-content-evenly align-items-center">
+                <form class="card-form" action="" method="POST">
                     {% csrf_token %}
                     <input type="hidden" name="react_meme_id" value="{{ clean_meme.meme.pk }}">
                     {% for react in clean_meme.clean_reactions %}
@@ -61,20 +62,12 @@
             </div>
             <br>
         </div>
-        <br>
     {% endfor %}
-    </div>
-
-
     {% if dict_memes.has_next %}
-    <div class="d-flex justify-content-evenly align-items-center">
-        <a class="infinite-more-link btn btn-primary btn-lg btn-block" href="?page={{ dict_memes.next_page_number }}">More</a>
-    </div>
-    <br>
+    <p class="pagination d-flex justify-content-evenly align-items-center">
+        <a class="next-page" href="?page={{ dict_memes.next_page_number }}"></a>
+    </p>
     {% endif %}
-
-    <div class="loading" style="display: none;">
-    Loading...
     </div>
 </div>
 
@@ -90,15 +83,23 @@
     </div>
 </div>
 
+<!-- jQuery CDN hosted by Google -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- jScroll plug-in CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jscroll/2.4.1/jquery.jscroll.min.js"></script>
+
+
 <script>
-    var infinite = new Waypoint.Infinite({
-      element: $('.infinite-container')[0],
-      onBeforePageLoad: function () {
-        $('.loading').show();
-      },
-      onAfterPageLoad: function ($items) {
-        $('.loading').hide();
-      }
+    jQuery(function ($) {
+        var $list = $('.all_memes');
+        $list.jscroll({
+            loadingHtml: '<div class="text-center">Loading...</div>',
+            padding: 100,
+            pagingSelector: '.pagination',
+            nextSelector: 'a.next-page:last',
+            contentSelector: '.card,.pagination'
+        });
     });
 </script>
+
 {% endblock %}
