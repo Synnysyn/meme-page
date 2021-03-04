@@ -8,6 +8,7 @@ from meme_page.models import Meme, Genre, Report, Avatar, REACTIONS
 
 # Create your tests here.
 
+
 @pytest.fixture
 def user():
     u = User.objects.create_superuser(
@@ -15,10 +16,12 @@ def user():
     )
     return u
 
+
 @pytest.fixture
 def genre():
     g = Genre.objects.create(name="casual")
     return g
+
 
 @pytest.fixture
 def meme():
@@ -26,9 +29,14 @@ def meme():
         username="TrollUltimate", password="TrollUltimate123123"
     )
     g = Genre.objects.create(name="casual")
-    m = Meme.objects.create(title="kappa", creator=u, image="meme-page/casualmemes/meme_page/static/meme_page/test_meme.jpg")
+    m = Meme.objects.create(
+        title="kappa",
+        creator=u,
+        image="meme-page/casualmemes/meme_page/static/meme_page/test_meme.jpg",
+    )
     m.genres.add(g)
     return m
+
 
 # @pytest.fixture
 # def group():
@@ -43,20 +51,22 @@ def test_meme_menu(client):
     response = client.get(reverse("menu", kwargs={"genre": "All"}))
     assert response.status_code == 200
 
+
 @pytest.mark.django_db
 def test_meme_menu_post(meme, client):
     """
     testing Main menu View
     """
     context = {
-        "filters_applied" : True,
-        "genre_filter" : "casual",
-        "react_meme_id" : meme.id,
-        "reaction" : REACTIONS[0][1],
+        "filters_applied": True,
+        "genre_filter": "casual",
+        "react_meme_id": meme.id,
+        "reaction": REACTIONS[0][1],
     }
     response = client.post(reverse("menu", kwargs={"genre": "All"}), context)
     assert response.status_code == 302
-    
+
+
 @pytest.mark.django_db
 def test_meme_redirect(client):
     """
@@ -64,6 +74,7 @@ def test_meme_redirect(client):
     """
     response = client.get(reverse("index"))
     assert response.status_code == 302
+
 
 @pytest.mark.django_db
 def test_meme_redirect_url(client):
@@ -110,14 +121,15 @@ def test_meme_create_new_user(client):
     """
     Group.objects.create(name="Any User")
     context = {
-        "username" : "Troll",
-        "password" : "Troll123123",
-        "repeat_password" : "Troll123123",
-        "email" : "trolling@trl.tl",
+        "username": "Troll",
+        "password": "Troll123123",
+        "repeat_password": "Troll123123",
+        "email": "trolling@trl.tl",
     }
     response = client.post(reverse("create-user"), context)
 
     assert response.status_code == 302
+
 
 @pytest.mark.django_db
 def test_meme_create_report(meme, client):
@@ -134,9 +146,11 @@ def test_meme_create_new_report(meme, client):
     testing Reporting View
     """
     context = {
-        "report_message" : "Troll",
+        "report_message": "Troll",
     }
-    response = client.post(reverse("create-report", kwargs={"report_id": meme.id}), context)
+    response = client.post(
+        reverse("create-report", kwargs={"report_id": meme.id}), context
+    )
 
     r = Report.objects.filter(message="Troll", reported=meme)
 
@@ -160,8 +174,8 @@ def test_meme_wrong_avatar(user, client):
     testing Avatar change View
     """
     context = {
-        "owner" : user,
-        "image" : "string",
+        "owner": user,
+        "image": "string",
     }
     avatar_count = Avatar.objects.count()
     assert avatar_count == 0
