@@ -32,7 +32,7 @@ def meme():
     m = Meme.objects.create(
         title="kappa",
         creator=u,
-        image="meme-page/casualmemes/meme_page/static/meme_page/test_meme.jpg",
+        image="test_meme.jpg",
     )
     m.genres.add(g)
     return m

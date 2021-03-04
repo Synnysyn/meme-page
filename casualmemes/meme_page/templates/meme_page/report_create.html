@@ -1,4 +1,4 @@
-{% extends 'meme_page/base.html' %}
+{% extends 'meme_page\base.html' %}
 {% block title %}
 <h2>Report Meme</h2>
 {% endblock %}
@@ -7,10 +7,10 @@
   <div class="d-flex flex-column bd-highlight mb-3">
   <h2 class="p-2 bd-highlight">Report Meme</h2>
     <div class="d-flex flex-column bd-highlight mb-3">
-        <form method="POST" enctype="multipart/form-data" class="d-flex flex-column p-2 bd-highlight"
+        <form method="POST" class="d-flex flex-column p-2 bd-highlight">
             {% csrf_token %}
-            <label for="report_message">Why do you want to report this message?</label>
             <textarea name="report_message" required id="report_message" rows="4" cols="50"></textarea>
+            <label for="report_message">Why do you want to report this message?</label>
             <button type="submit" class="bd-highlight mb-3">Report</button>
         </form>
     </div>
