@@ -115,14 +115,12 @@ class MenuView(View):
 
         if "react_meme_id" in request.POST:
             meme = Meme.objects.get(pk=request.POST.get("react_meme_id"))
-            if REACTIONS[0][1] in request.POST:
-                reaction = REACTIONS[0][0]
-            elif REACTIONS[1][1] in request.POST:
-                reaction = REACTIONS[1][0]
-            elif REACTIONS[2][1] in request.POST:
-                reaction = REACTIONS[2][0]
-            elif REACTIONS[3][1] in request.POST:
-                reaction = REACTIONS[3][0]
+            reactions_dict = dict(REACTIONS)
+            reaction = ""
+            for reaction_type in reactions_dict:
+                if reactions_dict[reaction_type] in request.POST:
+                    reaction = reaction_type
+                    break
             try:
                 react = Reaction.objects.get(
                     reaction_from=request.user, reaction_to=meme
