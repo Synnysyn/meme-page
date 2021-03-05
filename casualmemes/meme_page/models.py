@@ -33,7 +33,7 @@ class Meme(models.Model):
     title = models.CharField(max_length=64)
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
     image = models.ImageField(upload_to="uploads/")
-    genres = models.ManyToManyField(Genre, default=None)
+    genres = models.ManyToManyField(Genre, default=None, blank=True)
     added = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
