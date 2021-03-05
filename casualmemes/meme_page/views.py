@@ -92,7 +92,7 @@ class MenuView(View):
     """
 
     def get(self, request, genre):
-        memes = Meme.objects.all().order_by("added")
+        memes = Meme.objects.all().order_by("-added")
         genres = Genre.objects.all()
         page = request.GET.get("page", 1)
         dict_memes = paginating(page, memes)
