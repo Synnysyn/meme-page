@@ -3,7 +3,7 @@
 {% load static %}
 
 <div class="container d-flex justify-content-evenly">
-    <div class="flex-column">
+    <div class="flex-column" style="margin: 10px;">
         <h2>Genres</h2>
         <form action="" method="POST">
             {% csrf_token %}
@@ -89,9 +89,9 @@
     <div class="">
         <ul style="list-style-type: none">
             {% if user.is_authenticated %}
-            <li><a href="{% url 'create-meme' %}" class="btn btn-primary btn-sm">Add Your Meme</a></li>
-            <li><a href="{% url 'password_change' %}" class="btn btn-primary btn-sm">Change password</a></li>
-            <li><a href="{% url 'change-avatar' %}" class="btn btn-primary btn-sm">Change avatar</a></li>
+            <li style="margin: 10px;"><a href="{% url 'create-meme' %}" class="btn btn-primary btn-sm">Add Your Meme</a></li>
+            <li style="margin: 10px;"><a href="{% url 'password_change' %}" class="btn btn-primary btn-sm">Change password</a></li>
+            <li style="margin: 10px;"><a href="{% url 'change-avatar' %}" class="btn btn-primary btn-sm">Change avatar</a></li>
             {% endif %}
         </ul>
     </div>
