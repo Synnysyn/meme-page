@@ -27,12 +27,14 @@ class Meme(models.Model):
     - creator - User foreign key
     - image - imagefield
     - genres - many to many with Genre
+    - added - datetime field
     """
 
     title = models.CharField(max_length=64)
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
     image = models.ImageField(upload_to="uploads/")
     genres = models.ManyToManyField(Genre, default=None)
+    added = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.title} by {self.creator.username}"

@@ -9,8 +9,8 @@
     <div class="d-flex flex-column bd-highlight mb-3">
         <form method="POST" class="d-flex flex-column p-2 bd-highlight">
             {% csrf_token %}
-            <textarea name="report_message" required id="report_message" rows="4" cols="50"></textarea>
             <label for="report_message">Why do you want to report this message?</label>
+            <textarea name="report_message" required id="report_message" rows="4" cols="50"></textarea>
             <button type="submit" class="bd-highlight mb-3">Report</button>
         </form>
     </div>
