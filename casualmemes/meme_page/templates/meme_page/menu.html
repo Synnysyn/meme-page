@@ -29,58 +29,61 @@
     </div>
 
 
-<div class="flex-column">
-    <div class="all_memes">
+    <div class="flex-column">
+        <div class="all_memes">
 
-    {% for clean_meme in dict_memes %}
+        {% for clean_meme in dict_memes %}
 
-        {% if genre in clean_meme.meme_genres%}
-        <div class="card">
-        {% else %}
-        <div class="card" hidden>
-        {% endif %}
-            <!-- {% if genre in clean_meme.meme_genres %} -->
-            <div style="border:1px solid black" id="meme{{clean_meme.meme.pk}}">
-                <br>
-                <div class="card-div d-flex justify-content-around align-items-center">
-                    <div class="card-div d-flex justify-content-between align-items-center" >
-                        {% if clean_meme.avatar == "static_avatar" %}
-                            <img src="{% static 'meme_page\blank-avatar.png' %}" height="50"/>
-                        {% else %}
-                            <img src="{{ clean_meme.avatar.image.url }}" height="50"/>
-                        {% endif %}
+            {% if genre in clean_meme.meme_genres%}
+            <div class="card">
+            {% else %}
+            <div class="card" hidden>
+            {% endif %}
+                <!-- {% if genre in clean_meme.meme_genres %} -->
+                <div style="border:1px solid black" id="meme{{clean_meme.meme.pk}}">
+                    <br>
+                    <div class="card-div d-flex justify-content-around align-items-center">
+                        <div class="card-div d-flex justify-content-between align-items-center" >
+                            {% if clean_meme.avatar == "static_avatar" %}
+                                <img src="{% static 'meme_page\blank-avatar.png' %}" height="50"/>
+                            {% else %}
+                                <img src="{{ clean_meme.avatar.image.url }}" height="50"/>
+                            {% endif %}
+                            
+                            <h3 style="padding:10px">{{ clean_meme.meme.creator.username }}</h3>
+                        </div>
                         
-                        <h3 style="padding:10px">{{ clean_meme.meme.creator.username }}</h3>
+                        <h2 class="text-center">"{{ clean_meme.meme.title }}"</h2>
                     </div>
-                    
-                    <h2 class="text-center">"{{ clean_meme.meme.title }}"</h2>
+                    <br>
+                    <div class="card-div d-flex justify-content-center w-100 h-100"><img src="{{ clean_meme.meme.image.url }}" class="mw-100 mh=100"/></div>
+                    <br>
+                    <div class="card-div d-flex justify-content-evenly align-items-center">
+                        <form class="card-form" action="" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="react_meme_id" value="{{ clean_meme.meme.pk }}">
+                            <input type="hidden" name="react_meme_page" value="{{ clean_meme.page_number }}">
+                            {% for react in clean_meme.clean_reactions %}
+                            <button type="submit" name="{{ react.1 }}" class="btn btn-secondary">{{ react.0 }}</button>
+                            {% endfor %}
+                        </form>
+                        <a href="{% url 'create-report' clean_meme.meme.pk %}" class="btn btn-secondary">Report Meme</a>
+                    </div>
+                    <br>
                 </div>
-                <br>
-                <div class="card-div d-flex justify-content-center w-100 h-100"><img src="{{ clean_meme.meme.image.url }}" class="mw-100 mh=100"/></div>
-                <br>
-                <div class="card-div d-flex justify-content-evenly align-items-center">
-                    <form class="card-form" action="" method="POST">
-                        {% csrf_token %}
-                        <input type="hidden" name="react_meme_id" value="{{ clean_meme.meme.pk }}">
-                        <input type="hidden" name="react_meme_page" value="{{ clean_meme.page_number }}">
-                        {% for react in clean_meme.clean_reactions %}
-                        <button type="submit" name="{{ react.1 }}" class="btn btn-secondary">{{ react.0 }}</button>
-                        {% endfor %}
-                    </form>
-                    <a href="{% url 'create-report' clean_meme.meme.pk %}" class="btn btn-secondary">Report Meme</a>
-                </div>
-                <br>
+                <!-- {% endif %} -->
             </div>
-            <!-- {% endif %} -->
+        {% endfor %}
+        {% if dict_memes.has_next %}
+        <div class="pagination d-flex justify-content-evenly align-items-center">
+            <a class="next-page" href="/memes/{{genre}}?page={{ dict_memes.next_page_number }}"></a>
         </div>
-    {% endfor %}
-    {% if dict_memes.has_next %}
-    <div class="pagination d-flex justify-content-evenly align-items-center">
-        <a class="next-page" href="/memes/{{genre}}?page={{ dict_memes.next_page_number }}"></a>
+        {% endif %}
+        </div>
+        <h3 class="text-center">
+            Try to add your meme!
+        </h3>
     </div>
-    {% endif %}
-    </div>
-</div>
 
 
     <div class="">
