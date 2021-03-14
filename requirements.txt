@@ -8,3 +8,6 @@ tdd
 future
 numpy
 pandas
+dj-database-url
+gunicorn
+whitenoise
