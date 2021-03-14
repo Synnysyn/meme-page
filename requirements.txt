@@ -1,7 +1,7 @@
 django
 Pillow
 psycopg2
-django-cleanup-5.1.0
+django-cleanup
 pytest
 pytest-django
 tdd
