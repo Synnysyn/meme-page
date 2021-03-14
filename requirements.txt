@@ -11,3 +11,4 @@ pandas
 dj-database-url
 gunicorn
 whitenoise
+django-heroku
