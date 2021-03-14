@@ -82,8 +82,7 @@ WSGI_APPLICATION = "casualmemes.wsgi.application"
 try:
     from casualmemes.local_settings import DATABASES
 except ModuleNotFoundError:
-    print("Database is not specified in local_settings.py!")
-    exit(0)
+    from casualmemes.example_local_settings import DATABASES
 
 
 # Password validation
