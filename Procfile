@@ -1,1 +1,1 @@
-web: gunicorn meme_page.wsgi --log-file -
+web: gunicorn casualmemes.wsgi --log-file -
