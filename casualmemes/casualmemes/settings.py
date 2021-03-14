@@ -87,6 +87,7 @@ except ModuleNotFoundError:
     except ModuleNotFoundError:
         exit(0)
 
+WHITENOISE_USE_FINDERS = True
 
 db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(db_from_env)
@@ -138,5 +139,4 @@ MEDIA_URL = "/media/"
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 
-WHITENOISE_USE_FINDERS = True
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
