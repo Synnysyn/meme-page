@@ -2,6 +2,8 @@
 
 Casual Memes is a Django page created for easy uploading, sharing and reacting to memes.
 
+![ExampleScreenshot](https://github.com/Synnysyn/meme-page/blob/main/casualmemes/meme_page/static/meme_page/Screenshot%202021-03-15%20103955.png)
+
 ## Installation
 
 Repository is currently in development!
